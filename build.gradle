@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+}
+
+group = 'com.muyucraft'
+version = '1.0.0-SNAPSHOT'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+processResources.filteringCharset = 'UTF-8'
+[compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name = 'dmulloy2-repo'
+        url = 'https://repo.dmulloy2.net/repository/public/'
+    }
+}
+
+dependencies {
+    // Idea Annotations
+    compileOnly 'org.jetbrains:annotations:23.1.0'
+    // BukkitAPI
+    compileOnly 'org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT'
+    // Netty Minecraft内置的Nio框架 用于内建HTTP服务器
+    compileOnly 'io.netty:netty-all:4.1.82.Final'
+    // ProtocolLib 用于发包创建地图 和 一些其它操作
+    compileOnly 'com.comphenix.protocol:ProtocolLib:4.8.0'
+
+    // Bukkit插件的注解处理器
+    compileOnly 'org.spigotmc:plugin-annotations:1.2.3-SNAPSHOT'
+    annotationProcessor 'org.spigotmc:plugin-annotations:1.2.3-SNAPSHOT'
+
+    // 简化一些代码
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    // HikariCP 轻量级的数据库连接池 提高数据库连接性能
+    // 这个库包括slf4j 200k
+    implementation 'com.zaxxer:HikariCP:4.0.3'
+}
+
+java {
+    withSourcesJar()
+}
+
+shadowJar {
+    relocate 'com.zaxxer', "${project.group}.libs"
+    relocate 'org.slf4j', "${project.group}.libs.slf4j"
+}
