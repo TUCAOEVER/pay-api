@@ -60,16 +60,6 @@ public interface PayInterface {
     /**
      * 创建订单
      *
-     * @param buyer  买家
-     * @param amount 支付金额
-     * @return 订单号
-     */
-    @NotNull
-    Order createOrder(@NotNull UUID buyer, @NotNull BigDecimal amount);
-
-    /**
-     * 创建订单
-     *
      * @param buyer   买家
      * @param amount  支付金额
      * @param subject 标题
@@ -79,7 +69,7 @@ public interface PayInterface {
     Order createOrder(@NotNull UUID buyer, @NotNull BigDecimal amount, @NotNull String subject);
 
     /**
-     * 发起支付<br/>
+     * 发起支付
      * 一个订单只能发起一次支付 避免造成重复支付
      *
      * @param order  订单

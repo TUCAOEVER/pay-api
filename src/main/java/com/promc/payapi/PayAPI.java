@@ -241,12 +241,6 @@ public final class PayAPI extends JavaPlugin implements PayInterface {
 
     @Override
     @NotNull
-    public Order createOrder(@NotNull UUID buyer, @NotNull BigDecimal amount) {
-        return createOrder(buyer, amount, "");
-    }
-
-    @Override
-    @NotNull
     public Order createOrder(@NotNull UUID buyer, @NotNull BigDecimal amount, @NotNull String subject) {
         Order order = new Order();
         order.setId(sequence.nextId());

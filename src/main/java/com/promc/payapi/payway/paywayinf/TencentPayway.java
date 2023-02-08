@@ -91,6 +91,8 @@ public abstract class TencentPayway implements Payway {
         params.put("sign", sign);
 
         LoggerUtil.debug("正在请求URL: "+ getUnifiedOrderUrl());
+        LoggerUtil.debug("请求参数:" + params);
+        // LoggerUtil.debug("回调地址: " + TucaPayApi.getAPI().getNotifyUrl() + "/" + getIdentifier());
         String body = HttpUtil.post(getUnifiedOrderUrl(), mapToXml(params));
         LoggerUtil.debug("返回结果: "+ body);
 
@@ -106,6 +108,7 @@ public abstract class TencentPayway implements Payway {
     public void notify(@NotNull ChannelHandlerContext ctx, @NotNull FullHttpRequest request) {
         String body = request.content().toString(StandardCharsets.UTF_8);
         Map<String, String> params = xmlToMap(body);
+        LoggerUtil.debug("接收到付款通知: " + params);
 
         if (verify(params)) {
             if ("SUCCESS".equals(params.get("trade_state")) || "SUCCESS".equals(params.get("return_code"))) {
@@ -190,7 +193,13 @@ public abstract class TencentPayway implements Payway {
         try {
             MessageDigest md5 = MessageDigest.getInstance("md5");
             byte[] digest = md5.digest(content.getBytes(StandardCharsets.UTF_8));
-            return new BigInteger(1, digest).toString(16).toUpperCase();
+            String hexString = new BigInteger(1, digest).toString(16);
+            int length = 32 - hexString.length();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < length; i++) {
+                sb.append('0');
+            }
+            return sb.append(hexString).toString().toUpperCase();
         } catch (NoSuchAlgorithmException e) {
             throw new UnsupportedOperationException("不支持的加密方式", e);
         }

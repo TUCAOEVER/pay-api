@@ -4,7 +4,7 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
-group = 'com.muyucraft'
+group = 'com.promc'
 version = '1.0.0-SNAPSHOT'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
